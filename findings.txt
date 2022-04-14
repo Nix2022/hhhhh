@@ -1,0 +1,23 @@
+1. Hibernate will generate the names of the tables in lowercase letters.
+	• Look at this property to change it: spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+	
+2. Making an entity serializable isn’t strictly necessary as far as the JPA specification is concerned. However, it is needed if you’re going to use caching or
+	EJB remoting, both of which require objects to be Serializable . Caching is a key component in achieving optimal performance in any JPA application.
+
+3. Transient objects exist in memory only. Hibernate does not manage transient objects or persist changes to
+	transient objects. If you have a Person POJO, and you create an instance with new Person(), that object is
+	transient and there’s no expectation that it’s somehow represented in a database as long as it’s in
+	transient state.To persist the changes to a transient object, you would have to ask the session to save
+	the transient object to the database, at which point Hibernate assigns the object an identifier and 
+	marks the object as being in persistent state.Persistent objects exist in the database, and Hibernate
+	manages the persistence for persistent objects. (@Transient annotation)
+4. Association ownership is concerned exclusively with the management of the foreign keys in the database
+	4.1 one-to-one: Either end can be made the owner, but one (and only one) of them should be;
+		if you don’t specify this, you will end up with a circular dependency.
+	4.2 one-to-many: The “one” end must be made the owner of the association.
+	4.3 many-to-one: This is the same as the one-to-many relationship viewed from the opposite perspective,
+		so the same rule applies: the many end must be made the owner of the association.
+	4.4 many-to-many: Either end of the association can be made the owner.
+5. if you are comparing objects in two different Hibernate sessions, you will need to implement the equals() 
+	method on your Java persistence objects, which you should probably do as a regular occurrence anyway.
+	(Just don’t forget to implement hashCode() along with it.)

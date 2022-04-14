@@ -1,0 +1,42 @@
+*** Hibernate *** 
+1. JPA implementation (Not JPA)
+2. Simplifies the use of RDBs by using POJOs and storing them in DB
+3. Doesn't mean we need to get rid of JDBC (two different purposes)
+4. The more your code is abstracted away from interfacing directly with a database (and dealing with these
+	lower-level concerns), the easier it is to switch to a different database or persistence technology. Similarly,
+	Hibernate also offers an abstraction over your data model, allowing you to focus on your application’s
+	persistence details rather than on the particulars of your database.
+5. Persistence tier has several core layers. This modular architecture is enforced by Spring
+	5.1 The domain model
+		• key entities within an application
+		• Each class within the domain model contains the various properties and associations that correlate to 
+			columns and relationships within the database
+		• Typically, there is a domain entity for each table within the database
+	5.2 The Data Access Object (DAO) layer
+		• defines the means for saving and querying the domain model data
+		• DAO helps to abstract away those details specific to a particular database or persistence technology
+		• provides an interface for persistence behavior from the perspective of the domain model
+		• The goal of the DAO pattern is to completely abstract the underlying persistence technology and the 
+			manner in which it loads, saves, and manipulates the data represented by the domain model
+		• The key benefit of the DAO pattern is separation of concerns
+	5.3 The service layer (or service facade)
+		• handles the application business logic (surprisingly enough)
+		• Service facade methods typically delegate to multiple DAO methods in order to accomplish some business
+			logic as a single unit of work.
+			
+		• In Spring, the service layer typically is intended to accomplish three primary tasks:
+			• Serve as the core API through which other layers of your application will interface
+				(this is the incarnation of the facade pattern)
+			• Define the (typically coarse-grained) core business logic, usually calling on one or
+				more finer-grained DAO methods to achieve this goal
+			• Define transactional details for each facade method
+
+6. Associations:
+	6.1 Unidriectional: one entity can reference the other, but not the contrary
+	6.2 Bidirectional: both related entities can reference eachother
+		• Creates complications and circular references
+		• We typically use join tables (proxy table containing FK for each entity)
+	6.3 Cascading options help to establish parent-child relationships, or more precisely, the rules for how operations
+		such as save and delete that are applied to one entity should cascade to associated entities. This concept 
+		is often referred to as transitive persistence. (@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL})
+		

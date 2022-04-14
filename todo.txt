@@ -1,0 +1,2 @@
+• Hibernate tuning (caching etc...)
+• Hibernate Search and Lucene
